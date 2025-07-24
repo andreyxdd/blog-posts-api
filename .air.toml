@@ -1,0 +1,19 @@
+# .air.toml
+
+[build]
+cmd = "go build -o tmp/main cmd/api/main.go"
+bin = "tmp/main"
+dir = "."
+includeExt = ["go", "tpl", "tmpl", "html"]
+excludeDir = ["tmp", "vendor"]
+run_after_build = "chmod +x tmp/main"
+
+[log]
+time = true
+level = "debug"
+
+[color]
+main = "yellow"
+watcher = "cyan"
+build = "green"
+runner = "magenta"
