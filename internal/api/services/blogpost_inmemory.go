@@ -25,6 +25,10 @@ func (s *InMemoryStoreBlogPostRepo) Create(ctx context.Context, post *models.Blo
 	default:
 	}
 
+	if post == nil {
+		return nil, errors.New("post cannot be nil")
+	}
+
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
@@ -43,9 +47,11 @@ func (s *InMemoryStoreBlogPostRepo) GetAll(ctx context.Context) ([]*models.BlogP
 	default:
 	}
 
-	s.mu.Lock()
-	defer s.mu.Unlock()
-	posts := make([]*models.BlogPost, 0)
+	s.mu.RLock()
+	defer s.mu.RUnlock()
+
+	posts := make([]*models.BlogPost, 0, len(s.posts))
+
 	for _, post := range s.posts {
 		posts = append(posts, &post)
 	}
@@ -80,6 +86,10 @@ func (s *InMemoryStoreBlogPostRepo) Update(
 	case <-ctx.Done():
 		return nil, ctx.Err()
 	default:
+	}
+
+	if updated == nil {
+		return nil, errors.New("updated post cannot be nil")
 	}
 
 	s.mu.Lock()

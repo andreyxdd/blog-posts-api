@@ -3,6 +3,7 @@ package middleware
 import (
 	"blog-posts-api/internal/api/models"
 	"net/http"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 )
@@ -15,17 +16,17 @@ func ValidateBlogPostBody() gin.HandlerFunc {
 			c.Abort()
 			return
 		}
-		if post.Title == "" {
+		if post.Title == "" || strings.TrimSpace(post.Title) == "" {
 			c.JSON(http.StatusBadRequest, gin.H{"error": "missing title field"})
 			c.Abort()
 			return
 		}
-		if post.Content == "" {
+		if post.Content == "" || strings.TrimSpace(post.Content) == "" {
 			c.JSON(http.StatusBadRequest, gin.H{"error": "missing content field"})
 			c.Abort()
 			return
 		}
-		if post.Author == "" {
+		if post.Author == "" || strings.TrimSpace(post.Author) == "" {
 			c.JSON(http.StatusBadRequest, gin.H{"error": "missing author field"})
 			c.Abort()
 			return
