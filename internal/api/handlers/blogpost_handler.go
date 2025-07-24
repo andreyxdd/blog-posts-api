@@ -26,6 +26,19 @@ func (h *BlogPostHandler) RegisterRoutes(r *gin.RouterGroup) {
 	r.DELETE("/posts/:id", h.DeletePost)
 }
 
+// ErrorResponse represents an error response
+type ErrorResponse struct {
+	Error string `json:"error" example:"error message"`
+}
+
+// @Summary Get all blog posts
+// @Description Retrieves a list of all blog posts
+// @Tags Blog Posts
+// @Accept json
+// @Produce json
+// @Success 200 {array} models.BlogPost "List of blog posts"
+// @Failure 500 {object} ErrorResponse "Internal server error"
+// @Router /posts [get]
 func (h *BlogPostHandler) GetAllPosts(c *gin.Context) {
 	ctx := c.Request.Context()
 
@@ -38,6 +51,16 @@ func (h *BlogPostHandler) GetAllPosts(c *gin.Context) {
 	c.JSON(http.StatusOK, posts)
 }
 
+// @Summary Get a blog post by ID
+// @Description Retrieves a single blog post by its unique identifier
+// @Tags Blog Posts
+// @Accept json
+// @Produce json
+// @Param id path string true "Blog Post ID" example("550e8400-e29b-41d4-a716-446655440000")
+// @Success 200 {object} models.BlogPost "Blog post details"
+// @Failure 404 {object} ErrorResponse "Blog post not found"
+// @Failure 500 {object} ErrorResponse "Internal server error"
+// @Router /posts/{id} [get]
 func (h *BlogPostHandler) GetPost(c *gin.Context) {
 	ctx := c.Request.Context()
 	id := c.Param("id")
@@ -55,6 +78,16 @@ func (h *BlogPostHandler) GetPost(c *gin.Context) {
 	c.JSON(http.StatusOK, post)
 }
 
+// @Summary Create a new blog post
+// @Description Creates a new blog post with the provided data
+// @Tags Blog Posts
+// @Accept json
+// @Produce json
+// @Param blogpost body models.BlogPostCreate true "Blog post data"
+// @Success 201 {object} models.BlogPost "Created blog post"
+// @Failure 400 {object} ErrorResponse "Invalid request body or missing required fields"
+// @Failure 500 {object} ErrorResponse "Internal server error"
+// @Router /posts [post]
 func (h *BlogPostHandler) CreatePost(c *gin.Context) {
 	ctx := c.Request.Context()
 
@@ -75,6 +108,18 @@ func (h *BlogPostHandler) CreatePost(c *gin.Context) {
 	c.JSON(http.StatusCreated, created)
 }
 
+// @Summary Update a blog post
+// @Description Updates an existing blog post with the provided data
+// @Tags Blog Posts
+// @Accept json
+// @Produce json
+// @Param id path string true "Blog Post ID" example("550e8400-e29b-41d4-a716-446655440000")
+// @Param blogpost body models.BlogPostUpdate true "Updated blog post data"
+// @Success 200 {object} models.BlogPost "Updated blog post"
+// @Failure 400 {object} ErrorResponse "Invalid request body or missing required fields"
+// @Failure 404 {object} ErrorResponse "Blog post not found"
+// @Failure 500 {object} ErrorResponse "Internal server error"
+// @Router /posts/{id} [put]
 func (h *BlogPostHandler) UpdatePost(c *gin.Context) {
 	ctx := c.Request.Context()
 	id := c.Param("id")
@@ -99,6 +144,16 @@ func (h *BlogPostHandler) UpdatePost(c *gin.Context) {
 	c.JSON(http.StatusOK, updated)
 }
 
+// @Summary Delete a blog post
+// @Description Deletes a blog post by its unique identifier
+// @Tags Blog Posts
+// @Accept json
+// @Produce json
+// @Param id path string true "Blog Post ID" example("550e8400-e29b-41d4-a716-446655440000")
+// @Success 204 "Blog post deleted successfully (no content)"
+// @Failure 404 {object} ErrorResponse "Blog post not found"
+// @Failure 500 {object} ErrorResponse "Internal server error"
+// @Router /posts/{id} [delete]
 func (h *BlogPostHandler) DeletePost(c *gin.Context) {
 	ctx := c.Request.Context()
 	id := c.Param("id")
