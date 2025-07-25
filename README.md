@@ -13,7 +13,7 @@ The result should be `{"status":"ok"}`.
 
 Access swagger API specifications at:
 ```bash
-curl localhost:8080/api/v1/docs/index.html
+curl localhost:8080/api/docs/index.html
 ```
 
 # Possible improvements
